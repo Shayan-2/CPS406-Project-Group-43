@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="card">
+  <h2>My Applications</h2>
+</div>
+
+{% for item in applications %}
+<div class="card">
+  <h3>{{ item.title }}</h3>
+  <p><strong>Status:</strong> {{ item.status }}</p>
+  <p><strong>Deadline:</strong> {{ item.deadline }}</p>
+  <p><strong>Applied:</strong> {{ item.applied_at }}</p>
+  <form method="post" action="{{ url_for('withdraw_application', application_id=item.id) }}">
+    {% if item.status == 'pending' %}
+      <button type="submit">Withdraw</button>
+    {% endif %}
+  </form>
+</div>
+{% else %}
+<div class="card"><p>No applications yet.</p></div>
+{% endfor %}
+{% endblock %}

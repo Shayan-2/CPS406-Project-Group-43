@@ -1,0 +1,8 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="card">
+  <h2>Recruiter Dashboard</h2>
+  <p>Welcome, {{ g.user.username }}.</p>
+  <p class="small">Current job postings: {{ job_count }}</p>
+</div>
+{% endblock %}

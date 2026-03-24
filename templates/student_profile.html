@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="card">
+  <h2>Student Profile</h2>
+  <form method="post">
+    <div class="grid-2">
+      <div>
+        <label for="institution">Institution</label>
+        <input id="institution" name="institution" value="{{ profile.institution if profile else '' }}">
+      </div>
+      <div>
+        <label for="degree">Degree</label>
+        <input id="degree" name="degree" value="{{ profile.degree if profile else '' }}">
+      </div>
+      <div>
+        <label for="program">Program</label>
+        <input id="program" name="program" value="{{ profile.program if profile else '' }}">
+      </div>
+      <div>
+        <label for="grades">Grades</label>
+        <input id="grades" name="grades" value="{{ profile.grades if profile else '' }}">
+      </div>
+    </div>
+
+    <label for="resume_text">Resume / Notes</label>
+    <textarea id="resume_text" name="resume_text">{{ profile.resume_text if profile else '' }}</textarea>
+
+    <label>
+      <input type="checkbox" name="work_term_completed" {% if profile and profile.work_term_completed %}checked{% endif %}>
+      Work term completed
+    </label>
+
+    <button type="submit">Save Profile</button>
+  </form>
+</div>
+{% endblock %}

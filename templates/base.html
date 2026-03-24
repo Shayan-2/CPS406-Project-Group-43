@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Co-op Support App</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+  </head>
+  <body>
+    <header>
+      <h1>Co-op Support App</h1>
+      <nav>
+        <a href="{{ url_for('index') }}">Home</a>
+        {% if g.user %}
+          <a href="{{ url_for('dashboard') }}">Dashboard</a>
+          {% if g.user.role == 'student' %}
+            <a href="{{ url_for('student_profile') }}">Student Profile</a>
+            <a href="{{ url_for('student_jobs') }}">Browse Jobs</a>
+            <a href="{{ url_for('student_applications') }}">My Applications</a>
+          {% elif g.user.role == 'recruiter' %}
+            <a href="{{ url_for('recruiter_jobs') }}">Manage Jobs</a>
+            <a href="{{ url_for('recruiter_applications') }}">View Applications</a>
+          {% endif %}
+          {% if g.user.role in ['student', 'coordinator'] %}
+            <a href="{{ url_for('messages') }}">Messages</a>
+          {% endif %}
+          <a href="{{ url_for('logout') }}">Log Out</a>
+        {% else %}
+          <a href="{{ url_for('register') }}">Register</a>
+          <a href="{{ url_for('login') }}">Log In</a>
+        {% endif %}
+      </nav>
+    </header>
+    <main>
+      {% with messages = get_flashed_messages() %}
+        {% if messages %}
+          {% for msg in messages %}
+            <div class="flash">{{ msg }}</div>
+          {% endfor %}
+        {% endif %}
+      {% endwith %}
+      {% block content %}{% endblock %}
+    </main>
+  </body>
+</html>

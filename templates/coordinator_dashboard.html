@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="card">
+  <h2>Coordinator Dashboard</h2>
+  <p>Welcome, {{ g.user.username }}.</p>
+  <p class="small">Registered students: {{ student_count }}</p>
+  <p class="small">Use Messages to communicate with students.</p>
+</div>
+{% endblock %}

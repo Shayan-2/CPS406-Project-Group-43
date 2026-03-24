@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="card">
+  <h2>Applications Received</h2>
+</div>
+
+{% for app in applications %}
+<div class="card">
+  <h3>{{ app.job_title }}</h3>
+  <p><strong>Student:</strong> {{ app.student_name }}</p>
+  <p><strong>Status:</strong> {{ app.status }}</p>
+  <p><strong>Cover Letter:</strong> {{ app.cover_letter or 'N/A' }}</p>
+  <p><strong>Transcript Notes:</strong> {{ app.transcript_notes or 'N/A' }}</p>
+  <form method="post" action="{{ url_for('update_application_status', application_id=app.id) }}">
+    <label for="status_{{ app.id }}">Set Status</label>
+    <select id="status_{{ app.id }}" name="status">
+      <option value="pending" {% if app.status == 'pending' %}selected{% endif %}>Pending</option>
+      <option value="accepted" {% if app.status == 'accepted' %}selected{% endif %}>Accepted</option>
+      <option value="rejected" {% if app.status == 'rejected' %}selected{% endif %}>Rejected</option>
+    </select>
+    <button type="submit">Save Status</button>
+  </form>
+</div>
+{% else %}
+<div class="card"><p>No applications received yet.</p></div>
+{% endfor %}
+{% endblock %}

@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="card">
+  <h2>Create Job Posting</h2>
+  <form method="post">
+    <label for="title">Title</label>
+    <input id="title" name="title" required>
+
+    <label for="description">Description</label>
+    <textarea id="description" name="description" required></textarea>
+
+    <label for="requirements">Requirements</label>
+    <textarea id="requirements" name="requirements" required></textarea>
+
+    <label for="deadline">Deadline</label>
+    <input id="deadline" name="deadline" type="date" required>
+
+    <button type="submit">Create Posting</button>
+  </form>
+</div>
+
+{% for job in jobs %}
+<div class="card">
+  <h3>Edit Job: {{ job.title }}</h3>
+  <form method="post" action="{{ url_for('update_job', job_id=job.id) }}">
+    <label for="title_{{ job.id }}">Title</label>
+    <input id="title_{{ job.id }}" name="title" value="{{ job.title }}" required>
+
+    <label for="description_{{ job.id }}">Description</label>
+    <textarea id="description_{{ job.id }}" name="description" required>{{ job.description }}</textarea>
+
+    <label for="requirements_{{ job.id }}">Requirements</label>
+    <textarea id="requirements_{{ job.id }}" name="requirements" required>{{ job.requirements }}</textarea>
+
+    <label for="deadline_{{ job.id }}">Deadline</label>
+    <input id="deadline_{{ job.id }}" name="deadline" type="date" value="{{ job.deadline }}" required>
+
+    <button type="submit">Update</button>
+  </form>
+  <form method="post" action="{{ url_for('delete_job', job_id=job.id) }}">
+    <button type="submit">Delete</button>
+  </form>
+</div>
+{% else %}
+<div class="card"><p>No job postings yet.</p></div>
+{% endfor %}
+{% endblock %}

@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="card">
+  <h2>Student Dashboard</h2>
+  <p>Welcome, {{ g.user.username }}.</p>
+  {% if profile %}
+    <p class="small">Profile ready for {{ profile.program or 'Program not set' }}.</p>
+  {% else %}
+    <p class="small">Profile not created yet. Please complete your profile.</p>
+  {% endif %}
+</div>
+{% endblock %}

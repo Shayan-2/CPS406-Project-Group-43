@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="card">
+  <h2>Messages</h2>
+  <form method="post">
+    <label for="receiver_id">Recipient</label>
+    <select id="receiver_id" name="receiver_id" required>
+      <option value="">Select recipient</option>
+      {% for person in recipients %}
+        <option value="{{ person.id }}">{{ person.username }}</option>
+      {% endfor %}
+    </select>
+
+    <label for="body">Message</label>
+    <textarea id="body" name="body" required></textarea>
+
+    <button type="submit">Send</button>
+  </form>
+</div>
+
+<div class="card">
+  <h3>Conversation History</h3>
+  {% for msg in thread %}
+    <p>
+      <strong>{{ msg.sender_name }}</strong> to <strong>{{ msg.receiver_name }}</strong>
+      ({{ msg.sent_at }}): {{ msg.body }}
+    </p>
+  {% else %}
+    <p>No messages yet.</p>
+  {% endfor %}
+</div>
+{% endblock %}
