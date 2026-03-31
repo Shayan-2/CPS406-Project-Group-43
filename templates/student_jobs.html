@@ -5,23 +5,38 @@
   <form method="get">
     <label for="q">Search title/description/requirements</label>
     <input id="q" name="q" value="{{ q }}">
+
+    <label for="deadline_before">Deadline before</label>
+    <input id="deadline_before" name="deadline_before" type="date" value="{{ deadline_before }}">
+
+    <label>
+      <input type="checkbox" name="saved" value="1" {% if saved_only %}checked{% endif %}>
+      Show bookmarked jobs only
+    </label>
+
     <button type="submit">Search</button>
   </form>
 </div>
 
-{% for job in jobs %}
+{% for item in jobs %}
 <div class="card">
-  <h3>{{ job.title }}</h3>
-  <p><strong>Recruiter:</strong> {{ job.recruiter_name }}</p>
-  <p><strong>Deadline:</strong> {{ job.deadline }}</p>
-  <p>{{ job.description }}</p>
-  <p><strong>Requirements:</strong> {{ job.requirements }}</p>
-  <form method="post" action="{{ url_for('apply_job', job_id=job.id) }}">
-    <label for="cover_letter_{{ job.id }}">Cover Letter</label>
-    <textarea id="cover_letter_{{ job.id }}" name="cover_letter"></textarea>
+  <h3>{{ item.job.title }}</h3>
+  <p><strong>Recruiter:</strong> {{ item.job.recruiter_name }}</p>
+  <p><strong>Deadline:</strong> {{ item.job.deadline }}</p>
+  <p class="small">Recommendation score: {{ item.score }}</p>
+  <p>{{ item.job.description }}</p>
+  <p><strong>Requirements:</strong> {{ item.job.requirements }}</p>
 
-    <label for="transcript_notes_{{ job.id }}">Transcript Notes</label>
-    <textarea id="transcript_notes_{{ job.id }}" name="transcript_notes"></textarea>
+  <form method="post" action="{{ url_for('bookmark_job', job_id=item.job.id) }}">
+    <button type="submit">{% if item.bookmarked %}Remove Bookmark{% else %}Bookmark Job{% endif %}</button>
+  </form>
+
+  <form method="post" action="{{ url_for('apply_job', job_id=item.job.id) }}">
+    <label for="cover_letter_{{ item.job.id }}">Cover Letter</label>
+    <textarea id="cover_letter_{{ item.job.id }}" name="cover_letter"></textarea>
+
+    <label for="transcript_notes_{{ item.job.id }}">Transcript Notes</label>
+    <textarea id="transcript_notes_{{ item.job.id }}" name="transcript_notes"></textarea>
 
     <button type="submit">Apply</button>
   </form>

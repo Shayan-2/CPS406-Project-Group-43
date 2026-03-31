@@ -33,4 +33,13 @@
     <button type="submit">Save Profile</button>
   </form>
 </div>
+
+{% if resume_feedback %}
+<div class="card">
+  <h3>Resume Feedback</h3>
+  <p><strong>Keyword score:</strong> {{ resume_feedback.score }}%</p>
+  <p><strong>Matched:</strong> {{ resume_feedback.found|join(', ') if resume_feedback.found else 'None yet' }}</p>
+  <p><strong>Suggested additions:</strong> {{ resume_feedback.missing|join(', ') if resume_feedback.missing else 'Great coverage' }}</p>
+</div>
+{% endif %}
 {% endblock %}

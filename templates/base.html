@@ -7,31 +7,42 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
   </head>
   <body>
-    <header>
-      <h1>Co-op Support App</h1>
-      <nav>
-        <a href="{{ url_for('index') }}">Home</a>
-        {% if g.user %}
-          <a href="{{ url_for('dashboard') }}">Dashboard</a>
-          {% if g.user.role == 'student' %}
-            <a href="{{ url_for('student_profile') }}">Student Profile</a>
-            <a href="{{ url_for('student_jobs') }}">Browse Jobs</a>
-            <a href="{{ url_for('student_applications') }}">My Applications</a>
-          {% elif g.user.role == 'recruiter' %}
-            <a href="{{ url_for('recruiter_jobs') }}">Manage Jobs</a>
-            <a href="{{ url_for('recruiter_applications') }}">View Applications</a>
+    <header class="site-header">
+      <div class="header-inner">
+        <div>
+          <h1 class="brand">Co-op Support App</h1>
+        </div>
+        <nav class="main-nav">
+          <a href="{{ url_for('index') }}">Home</a>
+          {% if g.user %}
+            <a href="{{ url_for('dashboard') }}">Dashboard</a>
+            {% if g.user.role == 'student' %}
+              <a href="{{ url_for('student_profile') }}">Profile</a>
+              <a href="{{ url_for('student_jobs') }}">Jobs</a>
+              <a href="{{ url_for('student_applications') }}">Applications</a>
+              <a href="{{ url_for('student_work_term') }}">Work-Term Docs</a>
+            {% elif g.user.role == 'recruiter' %}
+              <a href="{{ url_for('recruiter_jobs') }}">Manage Jobs</a>
+              <a href="{{ url_for('recruiter_applications') }}">Candidates</a>
+            {% elif g.user.role == 'coordinator' %}
+              <a href="{{ url_for('coordinator_tracking') }}">Tracking</a>
+            {% endif %}
+            {% if g.user.role in ['student', 'coordinator'] %}
+              <a href="{{ url_for('messages') }}">Messages</a>
+            {% endif %}
+            <a href="{{ url_for('security_settings') }}">Security</a>
+            <a href="{{ url_for('notifications') }}">
+              Notifications <span id="notif-badge" class="badge">{{ g.unread_notifications }}</span>
+            </a>
+            <a href="{{ url_for('logout') }}">Log Out</a>
+          {% else %}
+            <a href="{{ url_for('register') }}">Register</a>
+            <a href="{{ url_for('login') }}">Log In</a>
           {% endif %}
-          {% if g.user.role in ['student', 'coordinator'] %}
-            <a href="{{ url_for('messages') }}">Messages</a>
-          {% endif %}
-          <a href="{{ url_for('logout') }}">Log Out</a>
-        {% else %}
-          <a href="{{ url_for('register') }}">Register</a>
-          <a href="{{ url_for('login') }}">Log In</a>
-        {% endif %}
-      </nav>
+        </nav>
+      </div>
     </header>
-    <main>
+    <main class="layout-main">
       {% with messages = get_flashed_messages() %}
         {% if messages %}
           {% for msg in messages %}
@@ -41,5 +52,24 @@
       {% endwith %}
       {% block content %}{% endblock %}
     </main>
+    {% if g.user %}
+    <script>
+      async function pollNotifications() {
+        try {
+          const response = await fetch("{{ url_for('poll_notifications') }}", { cache: "no-store" });
+          if (!response.ok) return;
+          const data = await response.json();
+          const badge = document.getElementById("notif-badge");
+          if (badge) {
+            badge.textContent = data.unread_count;
+          }
+        } catch (_err) {
+          // Network issues should not interrupt page usage.
+        }
+      }
+      pollNotifications();
+      setInterval(pollNotifications, 15000);
+    </script>
+    {% endif %}
   </body>
 </html>

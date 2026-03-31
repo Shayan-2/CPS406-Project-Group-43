@@ -3,6 +3,10 @@
 <div class="card">
   <h2>Recruiter Dashboard</h2>
   <p>Welcome, {{ g.user.username }}.</p>
-  <p class="small">Current job postings: {{ job_count }}</p>
+  <div class="grid-2">
+    <p><strong>Current jobs:</strong> {{ metrics.job_count }}</p>
+    <p><strong>Total applications:</strong> {{ metrics.application_count }}</p>
+    <p><strong>Shortlisted candidates:</strong> {{ metrics.shortlist_count }}</p>
+  </div>
 </div>
 {% endblock %}

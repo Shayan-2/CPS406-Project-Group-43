@@ -19,6 +19,18 @@
   </form>
 </div>
 
+<div class="card">
+  <h3>Posting Analytics</h3>
+  {% for row in analytics %}
+    <p>
+      <strong>{{ row.title }}</strong>: {{ row.total_apps }} applications,
+      {{ row.accepted_apps or 0 }} accepted
+    </p>
+  {% else %}
+    <p class="small">No analytics yet.</p>
+  {% endfor %}
+</div>
+
 {% for job in jobs %}
 <div class="card">
   <h3>Edit Job: {{ job.title }}</h3>

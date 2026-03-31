@@ -1,14 +1,30 @@
 {% extends 'base.html' %}
 {% block content %}
-<div class="card">
-  <h2>Sprint 1 MVP</h2>
+<section class="hero card">
+  <h2>Co-op Support Platform - Sprint 2</h2>
   <p>
-    This implementation covers the Sprint 1 requirements from Group 43:
-    registration/login, role-based workflows, student profile, recruiter job posting,
-    application tracking, and coordinator-student messaging.
+    Enhanced job discovery, bookmarking, recommendations, deadline notifications,
+    visual tracking, coordinator monitoring, and stronger account security.
   </p>
-  <p class="small">
-    Default coordinator account: username <strong>coord1</strong>, password <strong>coord123</strong>.
-  </p>
-</div>
+  <p class="small">Default coordinator account: <strong>coord1</strong> / <strong>coord123</strong>.</p>
+</section>
+
+<section class="grid-2">
+  <div class="card">
+    <h3>Students</h3>
+    <p>Find better-matched roles, save jobs, upload work-term reports, and track progress.</p>
+  </div>
+  <div class="card">
+    <h3>Recruiters</h3>
+    <p>Review analytics, manage postings, and shortlist promising candidates quickly.</p>
+  </div>
+  <div class="card">
+    <h3>Coordinators</h3>
+    <p>Monitor outcomes, identify missing documentation, and send reminders.</p>
+  </div>
+  <div class="card">
+    <h3>Security</h3>
+    <p>Optional 2FA and secure password reset links with expiry windows.</p>
+  </div>
+</section>
 {% endblock %}

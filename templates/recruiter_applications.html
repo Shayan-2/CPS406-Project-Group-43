@@ -9,6 +9,7 @@
   <h3>{{ app.job_title }}</h3>
   <p><strong>Student:</strong> {{ app.student_name }}</p>
   <p><strong>Status:</strong> {{ app.status }}</p>
+  <p><strong>Shortlisted:</strong> {{ 'Yes' if app.shortlisted else 'No' }}</p>
   <p><strong>Cover Letter:</strong> {{ app.cover_letter or 'N/A' }}</p>
   <p><strong>Transcript Notes:</strong> {{ app.transcript_notes or 'N/A' }}</p>
   <form method="post" action="{{ url_for('update_application_status', application_id=app.id) }}">
@@ -19,6 +20,9 @@
       <option value="rejected" {% if app.status == 'rejected' %}selected{% endif %}>Rejected</option>
     </select>
     <button type="submit">Save Status</button>
+  </form>
+  <form method="post" action="{{ url_for('toggle_shortlist', application_id=app.id) }}">
+    <button type="submit">{% if app.shortlisted %}Remove from Shortlist{% else %}Shortlist Candidate{% endif %}</button>
   </form>
 </div>
 {% else %}

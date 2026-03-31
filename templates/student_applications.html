@@ -10,6 +10,15 @@
   <p><strong>Status:</strong> {{ item.status }}</p>
   <p><strong>Deadline:</strong> {{ item.deadline }}</p>
   <p><strong>Applied:</strong> {{ item.applied_at }}</p>
+
+  <div class="progress-track">
+    <span class="step {% if item.status in ['pending', 'accepted', 'rejected'] %}active{% endif %}">Submitted</span>
+    <span class="step {% if item.status in ['pending', 'accepted', 'rejected'] %}active{% endif %}">Under Review</span>
+    <span class="step {% if item.status == 'accepted' %}active{% endif %}">Accepted</span>
+    <span class="step {% if item.status == 'rejected' %}active{% endif %}">Rejected</span>
+    <span class="step {% if item.status == 'withdrawn' %}active{% endif %}">Withdrawn</span>
+  </div>
+
   <form method="post" action="{{ url_for('withdraw_application', application_id=item.id) }}">
     {% if item.status == 'pending' %}
       <button type="submit">Withdraw</button>

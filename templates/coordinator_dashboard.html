@@ -5,5 +5,15 @@
   <p>Welcome, {{ g.user.username }}.</p>
   <p class="small">Registered students: {{ student_count }}</p>
   <p class="small">Use Messages to communicate with students.</p>
+  <p><a href="{{ url_for('coordinator_tracking') }}">Open student tracking and reminders</a></p>
+</div>
+
+<div class="card">
+  <h3>Application Outcomes</h3>
+  {% for item in outcome_counts %}
+    <p><strong>{{ item.status|capitalize }}:</strong> {{ item.total }}</p>
+  {% else %}
+    <p class="small">No applications available yet.</p>
+  {% endfor %}
 </div>
 {% endblock %}

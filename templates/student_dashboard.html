@@ -9,4 +9,17 @@
     <p class="small">Profile not created yet. Please complete your profile.</p>
   {% endif %}
 </div>
+
+<div class="card">
+  <h3>Recommended For You</h3>
+  {% for job in recommendations %}
+    <p>
+      <strong>{{ job.title }}</strong> by {{ job.recruiter_name }}
+      (deadline: {{ job.deadline }})
+    </p>
+  {% else %}
+    <p class="small">Complete your profile for personalized recommendations.</p>
+  {% endfor %}
+  <p><a href="{{ url_for('student_jobs') }}">Browse all jobs</a></p>
+</div>
 {% endblock %}
