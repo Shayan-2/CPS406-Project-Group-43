@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+  <h2>Notifications</h2>
+
+  {% if notifications %}
+    <ul class="notification-list">
+      {% for notif in notifications %}
+        <li class="notification-item {% if not notif.is_read %}notification-unread{% endif %}">
+          <div class="notification-body">
+            <span class="notification-kind notification-kind-{{ notif.kind }}">{{ notif.kind }}</span>
+            {% if notif.link %}
+              <a href="{{ notif.link }}">{{ notif.message }}</a>
+            {% else %}
+              {{ notif.message }}
+            {% endif %}
+            <span class="notification-time">{{ notif.created_at }}</span>
+          </div>
+          {% if not notif.is_read %}
+            <form method="post" action="{{ url_for('mark_notification_read', notification_id=notif.id) }}">
+              <button type="submit" class="btn btn-sm">Mark as read</button>
+            </form>
+          {% endif %}
+        </li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p>You have no notifications.</p>
+  {% endif %}
+</div>
+{% endblock %}
