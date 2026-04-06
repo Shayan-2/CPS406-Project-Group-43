@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+  <h2>Student Tracking</h2>
+
+  <p>Work-term report deadline: <strong>{{ deadline }}</strong></p>
+
+  {% if missing_reports %}
+    <div class="flash">
+      ⚠️ {{ missing_reports | length }} student(s) have not submitted a work-term report.
+    </div>
+  {% endif %}
+
+  <!-- Status Filter -->
+  <form method="get" action="{{ url_for('coordinator_tracking') }}" class="filter-form">
+    <label for="status">Filter by latest application status:</label>
+    <select name="status" id="status">
+      <option value="all" {% if status_filter == 'all' %}selected{% endif %}>All</option>
+      <option value="pending"   {% if status_filter == 'pending'   %}selected{% endif %}>Pending</option>
+      <option value="accepted"  {% if status_filter == 'accepted'  %}selected{% endif %}>Accepted</option>
+      <option value="rejected"  {% if status_filter == 'rejected'  %}selected{% endif %}>Rejected</option>
+      <option value="withdrawn" {% if status_filter == 'withdrawn' %}selected{% endif %}>Withdrawn</option>
+    </select>
+    <button type="submit" class="btn">Apply Filter</button>
+  </form>
+
+  {% if students %}
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>Username</th>
+          <th>Email</th>
+          <th>Program</th>
+          <th>Latest App Status</th>
+          <th>Work-Term Reports</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for student in students %}
+          <tr class="{% if student.report_count == 0 %}row-warning{% endif %}">
+            <td>{{ student.username }}</td>
+            <td>{{ student.email }}</td>
+            <td>{{ student.program or '—' }}</td>
+            <td>
+              {% if student.latest_status %}
+                <span class="status-badge status-{{ student.latest_status }}">
+                  {{ student.latest_status }}
+                </span>
+              {% else %}
+                <span class="status-badge">No applications</span>
+              {% endif %}
+            </td>
+            <td>
+              {% if student.report_count == 0 %}
+                <span class="status-badge status-rejected">Missing</span>
+              {% else %}
+                <span class="status-badge status-accepted">{{ student.report_count }} submitted</span>
+              {% endif %}
+            </td>
+            <td>
+              {% if student.report_count == 0 %}
+                <form method="post" action="{{ url_for('send_reminder', student_id=student.student_id) }}">
+                  <button type="submit" class="btn btn-sm">Send Reminder</button>
+                </form>
+              {% else %}
+                —
+              {% endif %}
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  {% else %}
+    <p>No students found matching the selected filter.</p>
+  {% endif %}
+</div>
+{% endblock %}

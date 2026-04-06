@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+  <h2>Security Settings</h2>
+
+  <div class="card">
+    <h3>Two-Factor Authentication (2FA)</h3>
+    <p>
+      When enabled, you will be shown a one-time code each time you log in.
+      Enter the code to complete sign-in.
+    </p>
+    <form method="post" action="{{ url_for('security_settings') }}">
+      <div class="form-group">
+        <label>
+          <input
+            type="checkbox"
+            name="two_factor_enabled"
+            value="on"
+            {% if two_fa_enabled %}checked{% endif %}
+          >
+          Enable two-factor authentication
+        </label>
+      </div>
+      <button type="submit" class="btn">Save Settings</button>
+    </form>
+    {% if two_fa_enabled %}
+      <p class="mt-sm"><span class="status-badge status-accepted">2FA is currently ON</span></p>
+    {% else %}
+      <p class="mt-sm"><span class="status-badge status-rejected">2FA is currently OFF</span></p>
+    {% endif %}
+  </div>
+
+  <div class="card">
+    <h3>Password Reset</h3>
+    <p>
+      To change your password, use the forgot-password flow. A reset link will be
+      generated and shown to you (demo mode — no email is sent).
+    </p>
+    <a href="{{ url_for('forgot_password') }}" class="btn">Reset Password</a>
+  </div>
+
+</div>
+{% endblock %}
